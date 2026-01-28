@@ -1,14 +1,19 @@
 <?php
 $host = "localhost";
-$db = "movie_booking";
+$db   = "movie_booking";
 $user = "root";
 $pass = "";
 
-
 try {
-$pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$db;charset=utf8mb4",
+        $user,
+        $pass,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]
+    );
 } catch (PDOException $e) {
-die("DB Error");
+    die("Database connection failed");
 }
-?>
