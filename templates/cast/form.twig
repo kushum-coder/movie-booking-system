@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+    {{ cast.id is defined ? 'Edit Cast Member' : 'Add Cast Member' }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ cast.id is defined ? 'Edit Cast Member' : 'Add Cast Member' }}</h2>
+
+<form method="post" class="card">
+    <label>Cast Name</label>
+    <input type="text" name="name"
+           value="{{ cast.name|default('') }}"
+           required>
+
+    <button type="submit">
+        {{ cast.id is defined ? 'Update' : 'Add' }}
+    </button>
+
+    <a href="index.php" style="margin-left:10px;">Cancel</a>
+</form>
+{% endblock %}

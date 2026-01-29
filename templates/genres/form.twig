@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+    {{ genre.id is defined ? 'Edit Genre' : 'Add Genre' }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ genre.id is defined ? 'Edit Genre' : 'Add Genre' }}</h2>
+
+<form method="post" class="card">
+    <label>Genre Name</label>
+    <input type="text" name="name"
+           value="{{ genre.name|default('') }}"
+           required>
+
+    <button type="submit">
+        {{ genre.id is defined ? 'Update' : 'Add' }}
+    </button>
+
+    <a href="index.php" style="margin-left:10px;">Cancel</a>
+</form>
+{% endblock %}

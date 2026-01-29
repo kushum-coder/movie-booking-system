@@ -1,0 +1,38 @@
+{% extends "layout.twig" %}
+
+{% block title %}Genres{% endblock %}
+
+{% block content %}
+<h2>Genres</h2>
+
+<a href="add.php">
+    <button>Add Genre</button>
+</a>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th style="width:160px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for genre in genres %}
+        <tr>
+            <td>{{ genre.name }}</td>
+            <td>
+                <a href="edit.php?id={{ genre.id }}">Edit</a> |
+                <a href="delete.php?id={{ genre.id }}"
+                   onclick="return confirm('Delete this genre?')">
+                   Delete
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">No genres found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
