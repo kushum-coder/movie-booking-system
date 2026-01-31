@@ -5,18 +5,34 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{ genre.id is defined ? 'Edit Genre' : 'Add Genre' }}</h2>
+<div class="card">
+    <h2>{{ genre.id is defined ? 'Edit Genre' : 'Add Genre' }}</h2>
 
-<form method="post" class="card">
-    <label>Genre Name</label>
-    <input type="text" name="name"
-           value="{{ genre.name|default('') }}"
-           required>
+    {% if errors is defined %}
+        {% for error in errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
 
-    <button type="submit">
-        {{ genre.id is defined ? 'Update' : 'Add' }}
-    </button>
+    <form method="post" autocomplete="off">
+        <!-- CSRF TOKEN (FIXES ERROR) -->
+        <input type="hidden" name="csrf" value="{{ csrf }}">
 
-    <a href="index.php" style="margin-left:10px;">Cancel</a>
-</form>
+        <label>Genre Name</label>
+        <input
+            type="text"
+            name="name"
+            value="{{ genre.name|default('') }}"
+            pattern="[A-Za-z ]{2,50}"
+            title="Only letters and spaces (min 2 characters)"
+            required
+        >
+
+        <button type="submit">
+            {{ genre.id is defined ? 'Update' : 'Add' }}
+        </button>
+
+        <a href="index.php" style="margin-left:10px;">Cancel</a>
+    </form>
+</div>
 {% endblock %}

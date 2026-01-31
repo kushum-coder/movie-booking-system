@@ -2,31 +2,62 @@
 session_start();
 require_once __DIR__ . '/../../config/db.php';
 
+if (!empty($_SESSION['admin'])) {
+    header('Location: /movie-booking-system/public/index.php');
+    exit;
+}
+
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ?");
-    $stmt->execute([$_POST['username']]);
+    $stmt->execute([$_POST['username'] ?? '']);
     $admin = $stmt->fetch();
 
-    if ($admin && password_verify($_POST['password'], $admin['password'])) {
+    if ($admin && password_verify($_POST['password'] ?? '', $admin['password'])) {
         $_SESSION['admin'] = $admin['username'];
-        header('Location: ../index.php');
+        header('Location: /movie-booking-system/public/index.php');
         exit;
     } else {
-        $error = 'Invalid login';
+        $error = 'Invalid username or password';
     }
 }
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/movie-booking-system/assets/css/style.css">
+    <script src="/movie-booking-system/assets/js/main.js" defer></script>
+</head>
 <body>
-<h2>Admin Login</h2>
-<form method="post">
-    <input name="username" placeholder="Username" required>
-    <input name="password" type="password" placeholder="Password" required>
-    <button>Login</button>
-</form>
-<p style="color:red;"><?= $error ?></p>
+
+<div class="centered" style="min-height:100vh;">
+    <div class="card login-card">
+        <h2 style="text-align:center;margin-bottom:20px;">Admin Login</h2>
+
+        <?php if ($error): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
+        <form method="post" autocomplete="off">
+            <input type="text" style="display:none">
+            <input type="password" style="display:none">
+
+            <input type="text" name="username" placeholder="Username" required>
+
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="toggle" onclick="togglePassword()">Show</span>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

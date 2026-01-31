@@ -1,9 +1,28 @@
 <?php
-require_once __DIR__ . '/admin/auth.php';
+session_start();
+
+if (empty($_SESSION['admin'])) {
+    header('Location: /movie-booking-system/public/admin/login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../bootstrap.php';
 
-$stmt = $pdo->query("SELECT * FROM movies ORDER BY id DESC");
-$movies = $stmt->fetchAll();
+$stmt = $pdo->query("
+    SELECT 
+        m.id,
+        m.title,
+        m.release_year,
+        m.rating,
+        g.name AS genre_name,
+        c.name AS cast_name
+    FROM movies m
+    LEFT JOIN genres g ON m.genre_id = g.id
+    LEFT JOIN cast_members c ON m.cast_id = c.id
+    ORDER BY m.id DESC
+");
+
+$movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 echo $twig->render('movies.twig', [
     'movies' => $movies

@@ -5,18 +5,34 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{ cast.id is defined ? 'Edit Cast Member' : 'Add Cast Member' }}</h2>
+<div class="card">
+    <h2>{{ cast.id is defined ? 'Edit Cast Member' : 'Add Cast Member' }}</h2>
 
-<form method="post" class="card">
-    <label>Cast Name</label>
-    <input type="text" name="name"
-           value="{{ cast.name|default('') }}"
-           required>
+    {% if errors is defined %}
+        {% for error in errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
 
-    <button type="submit">
-        {{ cast.id is defined ? 'Update' : 'Add' }}
-    </button>
+    <form method="post" autocomplete="off">
+        <!-- CSRF TOKEN (FIXES ERROR) -->
+        <input type="hidden" name="csrf" value="{{ csrf }}">
 
-    <a href="index.php" style="margin-left:10px;">Cancel</a>
-</form>
+        <label>Cast Name</label>
+        <input
+            type="text"
+            name="name"
+            value="{{ cast.name|default('') }}"
+            pattern="[A-Za-z ]{2,60}"
+            title="Only letters and spaces (min 2 characters)"
+            required
+        >
+
+        <button type="submit">
+            {{ cast.id is defined ? 'Update' : 'Add' }}
+        </button>
+
+        <a href="index.php" style="margin-left:10px;">Cancel</a>
+    </form>
+</div>
 {% endblock %}

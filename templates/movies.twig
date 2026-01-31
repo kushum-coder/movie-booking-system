@@ -5,25 +5,32 @@
 {% block content %}
 <h2>Movie List</h2>
 
-<input type="text" id="search" class="search-box" placeholder="Search by title, genre, cast...">
+<input
+    type="text"
+    id="search"
+    class="search-box"
+    placeholder="Search by title, genre, cast, year or rating..."
+>
 
-<ul id="results" class="movie-list">
+<div class="grid" id="movie-grid">
 {% for movie in movies %}
-    <li>
-        <strong>{{ movie.title }}</strong><br>
-        <span>
-            Genre: {{ movie.genre_name|default('—') }} |
-            Cast: {{ movie.cast_name|default('—') }} |
-            Year: {{ movie.release_year }} |
-            Rating: {{ movie.rating|default('—') }}
-        </span><br>
+    <div class="movie-card card">
+        <h3>{{ movie.title }}</h3>
 
-        <a href="edit.php?id={{ movie.id }}">Edit</a>
-        <a href="delete.php?id={{ movie.id }}"
-           onclick="return confirm('Delete this movie?')">Delete</a>
-    </li>
+        <div class="movie-meta">
+            <div><strong>Genre:</strong> {{ movie.genre_name|default('—') }}</div>
+            <div><strong>Cast:</strong> {{ movie.cast_name|default('—') }}</div>
+            <div><strong>Year:</strong> {{ movie.release_year }}</div>
+            <div><strong>Rating:</strong> {{ movie.rating|default('—') }}</div>
+        </div>
+
+        <div class="actions">
+            <a href="edit.php?id={{ movie.id }}">Edit</a>
+            <a href="delete.php?id={{ movie.id }}" onclick="return confirm('Delete this movie?')">Delete</a>
+        </div>
+    </div>
 {% else %}
-    <li class="empty">No movies found</li>
+    <p class="muted">No movies found</p>
 {% endfor %}
-</ul>
+</div>
 {% endblock %}

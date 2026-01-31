@@ -1,9 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
 if (empty($_SESSION['admin'])) {
-    header('Location: login.php');
+    header('Location: /movie-booking-system/public/admin/login.php');
     exit;
 }

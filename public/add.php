@@ -1,36 +1,62 @@
 <?php
-require_once __DIR__ . '/admin/auth.php';
 require_once __DIR__ . '/../bootstrap.php';
 
-$genres = $pdo->query("SELECT * FROM genres")->fetchAll();
-$casts  = $pdo->query("SELECT * FROM cast_members")->fetchAll();
+$errors = [];
+
+/* FETCH GENRES & CAST */
+$genres = $pdo->query("SELECT id, name FROM genres ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
+$casts  = $pdo->query("SELECT id, name FROM cast_members ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $year = (int) $_POST['release_year'];
-    if ($year <= 0) {
-        die('Invalid year');
+    if (!csrf_check($_POST['csrf'] ?? '')) {
+        $errors[] = 'Invalid CSRF token';
     }
 
-    $stmt = $pdo->prepare(
-        "INSERT INTO movies (title, genre_id, cast_id, release_year, rating)
-         VALUES (?, ?, ?, ?, ?)"
-    );
+    $title    = trim($_POST['title'] ?? '');
+    $genre_id = (int)($_POST['genre_id'] ?? 0);
+    $cast_id  = (int)($_POST['cast_id'] ?? 0);
+    $year     = trim($_POST['release_year'] ?? '');
+    $rating   = $_POST['rating'] !== '' ? (float)$_POST['rating'] : null;
 
-    $stmt->execute([
-        trim($_POST['title']),
-        (int) $_POST['genre_id'],
-        (int) $_POST['cast_id'],
-        $year,
-        (float) $_POST['rating']
-    ]);
+    if (!preg_match('/^[A-Za-z0-9 ]{2,100}$/', $title)) {
+        $errors[] = 'Title must contain only letters, numbers and spaces';
+    }
 
-    header('Location: index.php');
-    exit;
+    if ($genre_id <= 0) {
+        $errors[] = 'Please select a genre';
+    }
+
+    if ($cast_id <= 0) {
+        $errors[] = 'Please select a cast member';
+    }
+
+    if (!preg_match('/^\d{4}$/', $year)) {
+        $errors[] = 'Release year must be a 4-digit year';
+    }
+
+    if ($rating !== null && ($rating < 0 || $rating > 10)) {
+        $errors[] = 'Rating must be between 0 and 10';
+    }
+
+    if (!$errors) {
+        $stmt = $pdo->prepare(
+            "INSERT INTO movies (title, genre_id, cast_id, release_year, rating)
+             VALUES (?, ?, ?, ?, ?)"
+        );
+        $stmt->execute([$title, $genre_id, $cast_id, $year, $rating]);
+
+        header('Location: index.php');
+        exit;
+    }
 }
 
 echo $twig->render('form.twig', [
-    'genres' => $genres,
-    'casts'  => $casts,
-    'movie'  => []
+    'heading' => 'Add Movie',
+    'button'  => 'Add Movie',
+    'movie'   => $_POST,
+    'genres'  => $genres,
+    'casts'   => $casts,
+    'errors'  => $errors,
+    'csrf'    => csrf_token()
 ]);
