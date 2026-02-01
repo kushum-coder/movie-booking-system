@@ -18,13 +18,20 @@ $stmt = $pdo->prepare("
     LEFT JOIN genres g ON m.genre_id = g.id
     LEFT JOIN cast_members c ON m.cast_id = c.id
     WHERE
-        m.title LIKE :q
-        OR g.name LIKE :q
-        OR c.name LIKE :q
-        OR m.release_year LIKE :q
-        OR m.rating LIKE :q
+        m.title LIKE :title
+        OR g.name LIKE :genre
+        OR c.name LIKE :cast
+        OR CAST(m.release_year AS CHAR) LIKE :year
+        OR CAST(m.rating AS CHAR) LIKE :rating
     ORDER BY m.id DESC
 ");
 
-$stmt->execute(['q' => $qLike]);
+$stmt->execute([
+    ':title'  => $qLike,
+    ':genre' => $qLike,
+    ':cast'  => $qLike,
+    ':year'  => $qLike,
+    ':rating'=> $qLike
+]);
+
 echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
