@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . '/../../config/db.php';
 
 if (!empty($_SESSION['admin'])) {
-    header('Location: /movie-booking-system/public/index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($admin && password_verify($_POST['password'] ?? '', $admin['password'])) {
         $_SESSION['admin'] = $admin['username'];
-        header('Location: /movie-booking-system/public/index.php');
+        header('Location: ../index.php');
         exit;
     } else {
         $error = 'Invalid username or password';
@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="/movie-booking-system/assets/css/style.css">
-    <script src="/movie-booking-system/assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <script src="../../assets/js/main.js" defer></script>
 </head>
 <body>
 
