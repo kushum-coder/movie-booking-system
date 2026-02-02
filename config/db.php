@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$db   = "movie_booking";
-$user = "root";
-$pass = "";
+$db   = "np03cs4a240219";
+$user = "np03cs4a240219";
+$pass = "12345678";
 
 try {
     $pdo = new PDO(
@@ -18,3 +18,4 @@ try {
 } catch (PDOException $e) {
     die("Database connection failed");
 }
+ 
