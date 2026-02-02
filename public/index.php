@@ -10,10 +10,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 $stmt = $pdo->query("
     SELECT 
-        m.id,
-        m.title,
-        m.release_year,
-        m.rating,
+        m.*,
         g.name AS genre_name,
         c.name AS cast_name
     FROM movies m
