@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$db   = "np03cs4a240219";
-$user = "np03cs4a240219";
-$pass = "12345678";
+$db   = "movie_booking";
+$user = "root";
+$pass = "";
 
 try {
     $pdo = new PDO(

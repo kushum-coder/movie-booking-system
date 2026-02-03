@@ -56,8 +56,8 @@ if (search && grid) {
                         <div><strong>Rating:</strong> ${m.rating ?? '—'}</div>
                     </div>
                     <div class="actions">
-                        <a href="edit.php?id=${m.id}">Edit</a>
-                        <a href="delete.php?id=${m.id}" onclick="return confirm('Delete this movie?')">Delete</a>
+                        <a href="./public/edit.php?id=${m.id}">Edit</a>
+                        <a href="./public/delete.php?id=${m.id}" onclick="return confirm('Delete this movie?')">Delete</a>
                     </div>
                 </div>
             `).join('');

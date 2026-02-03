@@ -1,12 +1,12 @@
 {% extends "layout.twig" %}
 
 {% block title %}
-    {{ cast.id is defined ? 'Edit Cast Member' : 'Add Cast Member' }}
+    {{ genre.id is defined ? 'Edit Genre' : 'Add Genre' }}
 {% endblock %}
 
 {% block content %}
 <div class="card">
-    <h2>{{ cast.id is defined ? 'Edit Cast Member' : 'Add Cast Member' }}</h2>
+    <h2>{{ genre.id is defined ? 'Edit Genre' : 'Add Genre' }}</h2>
 
     {% if errors is defined %}
         {% for error in errors %}
@@ -18,21 +18,21 @@
         <!-- CSRF TOKEN (FIXES ERROR) -->
         <input type="hidden" name="csrf" value="{{ csrf }}">
 
-        <label>Cast Name</label>
+        <label>Genre Name</label>
         <input
             type="text"
             name="name"
-            value="{{ cast.name|default('') }}"
-            pattern="[A-Za-z ]{2,60}"
+            value="{{ genre.name|default('') }}"
+            pattern="[A-Za-z ]{2,50}"
             title="Only letters and spaces (min 2 characters)"
             required
         >
 
         <button type="submit">
-            {{ cast.id is defined ? 'Update' : 'Add' }}
+            {{ genre.id is defined ? 'Update' : 'Add' }}
         </button>
 
-        <a href="index.php" style="margin-left:10px;">Cancel</a>
+        <a href="./public/genres/index.php" style="margin-left:10px;">Cancel</a>
     </form>
 </div>
 {% endblock %}
