@@ -1,0 +1,36 @@
+{% extends "layout.twig" %}
+
+{% block title %}Movies{% endblock %}
+
+{% block content %}
+<h2>Movie List</h2>
+
+<input
+    type="text"
+    id="search"
+    class="search-box"
+    placeholder="Search by title, genre, cast, year or rating..."
+>
+
+<div class="grid" id="movie-grid">
+{% for movie in movies %}
+    <div class="movie-card card">
+        <h3>{{ movie.title }}</h3>
+
+        <div class="movie-meta">
+            <div><strong>Genre:</strong> {{ movie.genre_name|default('—') }}</div>
+            <div><strong>Cast:</strong> {{ movie.cast_name|default('—') }}</div>
+            <div><strong>Year:</strong> {{ movie.release_year }}</div>
+            <div><strong>Rating:</strong> {{ movie.rating|default('—') }}</div>
+        </div>
+
+        <div class="actions">
+            <a href="edit.php?id={{ movie.id }}">Edit</a>
+            <a href="delete.php?id={{ movie.id }}" onclick="return confirm('Delete this movie?')">Delete</a>
+        </div>
+    </div>
+{% else %}
+    <p class="muted">No movies found</p>
+{% endfor %}
+</div>
+{% endblock %}

@@ -27,7 +27,7 @@ The system follows a structured approach using MVC-like separation with:
 I uploaded my full project folder to the college student server using SSH/SCP from my local machine with the following command:
 
 // ```bash
-scp -r *  np03cs4a240219@10.80.0.250:~/public_html/movie-booking/
+scp -r -P 50222 . np03CS4a240219@103.41.173.36:~/public_html/movie-booking-system
  
 
 After uploading, I accessed my application through the student server link which I have submitted separately in my assignment document.
